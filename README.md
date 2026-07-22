@@ -114,12 +114,12 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 
 ## 3. Setup Backend Proxy
 
-### 3.1 Clone the Repository
+### 3.1 Download the Necessary Files From This Repository (index.js, .env.example, package.json, package-lock.json)
 
-```bash
-git clone https://github.com/REZ3X/reminder_proxy_express.git
-cd reminder_proxy_express
-```
+* [index.js](index.js)
+* [.env.example](.env.example)
+* [package.json](package.json)
+* [package-lock.json](package-lock.json)
 
 ### 3.2 Configure Environment Variables
 
