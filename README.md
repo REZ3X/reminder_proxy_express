@@ -177,8 +177,6 @@ Push the code to your own GitHub repository using Git or your IDE's built-in sou
 4. Under **Environment Variables**, copy the entire content of your `.env` file and paste it into the Vercel environment variable field.
 5. Click **Deploy** and wait for the deployment to complete.
 
-![Deployment](public/chatbot/images/deployment.png)
-
 ### 4.2 Domain Setup
 
 Vercel provides a free domain. Your API endpoints will be available at:
