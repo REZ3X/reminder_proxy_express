@@ -2,7 +2,7 @@
 
 An Express backend proxy that integrates with **Google Calendar API** to provide CRUD reminder operations, designed to work with **Botika Agentic Platform** chatbot workflows.
 
-*Current used version, for deprecated Next.js API Route version see [here](https://github.com/REZ3X/reminder_bot).*
+*Current used version.*
 
 ---
 
