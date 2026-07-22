@@ -493,7 +493,6 @@ Deletes a reminder event from Google Calendar.
 - **Listing Reminder**
 ![Listing Reminder in Webchat](public/chatbot/images/listc.png)
 ![Google Calendar View](public/chatbot/images/listg.png)
-
 *More of Listing/Showing*
 ![Listing Reminder in Webchat](public/chatbot/images/listc2.png)
 
@@ -503,7 +502,6 @@ Deletes a reminder event from Google Calendar.
 
 - **Edit Reminder**
 ![Edit Reminder in Webchat](public/chatbot/images/editc.png)
-![Google Calendar View](public/chatbot/images/editg.png)
 
 - **Delete Reminder**
 ![Delete Reminder in Webchat](public/chatbot/images/deletec.png)
