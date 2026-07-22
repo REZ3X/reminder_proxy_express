@@ -501,7 +501,8 @@ Deletes a reminder event from Google Calendar.
 - **Create Reminder**
 ![Create Reminder in Webchat](public/chatbot/images/createc.png)
 ![Google Calendar View](public/chatbot/images/createg.png)
-
+*More of Create Test Footage*
+![Create Reminder in Webchat](public/chatbot/images/createstc.png)
 - **Edit Reminder**
 ![Edit Reminder in Webchat](public/chatbot/images/editc.png)
 *More of Edit Test Footage*
@@ -509,3 +510,5 @@ Deletes a reminder event from Google Calendar.
 - **Delete Reminder**
 ![Delete Reminder in Webchat](public/chatbot/images/deletec.png)
 ![Google Calendar View](public/chatbot/images/deleteg.png)
+*More of Delete Test Footage*
+![Delete Reminder in Webchat](public/chatbot/images/deletestc.png)
