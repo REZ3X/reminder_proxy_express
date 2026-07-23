@@ -34,7 +34,7 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 | 5 | Git | Version control |
 | 6 | Node.js 22+ | Runtime environment |
 | 7 | IDE | Preferably integrated with GitHub |
-| 8 | Botika Account | Access to Platform v2 & v3 |
+| 8 | Botika Account | Access to Platform v3 |
 | 9 | Postman *(optional)* | For API testing |
 
 ---
