@@ -99,7 +99,7 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 
 ![Share with Service Account](public/chatbot/images/sharewithserviceaccount.png)
 
-6. Scroll down to the **"Integrate calendar"** section and copy the **Calendar ID**.
+6. <a id="integrate-calendar"></a>Scroll down to the **"Integrate calendar"** section and copy the **Calendar ID**.
 
 > [!TIP]
 > If you selected your primary calendar, the Calendar ID is usually your Google email address.
@@ -141,7 +141,7 @@ Push the code to your own GitHub repository using Git or manually uploads your f
 |----------|-------------|--------|
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service Account email | `client_email` field in the downloaded [JSON](#downloaded-json) or from Google Cloud Console Service Account list |
 | `GOOGLE_PRIVATE_KEY` | Private key string | `private_key` field in the downloaded [JSON](#downloaded-json) |
-| `GOOGLE_CALENDAR_ID` | Calendar ID | "Integrate calendar" section in Google Calendar settings |
+| `GOOGLE_CALENDAR_ID` | Calendar ID | "Integrate calendar" section in [Google Calendar settings](#integrate-calendar) |
 
 5. Click **Deploy** and wait for the deployment to complete.
 
