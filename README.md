@@ -16,8 +16,6 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 - [5. Chatbot Workflow (Platform v3 / Agentic Platform)](#5-chatbot-workflow-platform-v3--agentic-platform)
   - [Chatbot Workflow JSON](#chatbot-workflow-json)
 - [Webchat Bot Example](#webchat-bot-example)
-- [Known Issues](#known-issues)
-- [Solved Issues](#solved-issues)
 - [Working Bot Footage](#working-bot-footage)
 
 ---
@@ -157,9 +155,6 @@ You may also configure a custom domain on Vercel if desired.
 
 ![Domain Settings](public/chatbot/images/domain.png)
 
-> [!NOTE]
-> Refer to the [API Reference](#api-reference) section for the full list of endpoints, parameters, and response formats.
-
 ---
 
 ## 5. Chatbot Workflow (Platform v3 / Agentic Platform)
@@ -207,24 +202,6 @@ You may also configure a custom domain on Vercel if desired.
 You can try out a live example of the reminder bot running on Botika Webchat:
 
 🔗 **[https://chat.botika.online/v3/vfwAFYw](https://chat.botika.online/v3/vfwAFYw)**
-
----
-
-## Known Issues
-
-- **`reminders_list` variable is persistence-dependent**
-  The `reminders_list` variable is only populated/updated when the user goes through the `usr.reminderList` branch (i.e., explicitly lists/shows their reminders). If a user tries to directly edit or delete a reminder without listing it first, `reminders_list` may be stale, empty, or mismatched, causing the `id` matching in the Edit/Delete `Grab Context` steps to fail or resolve to the wrong reminder.
-
-- **No API Key Setup**
-  This backend proxy still does not implement any API key or authentication mechanism. All endpoints are publicly accessible once deployed. Authentication will be added in a future update.
-
----
-
-## Solved Issues
-
-- **LLM non-determinism — instruction-following failure**
-  At some point, the `edit-reminder` and `delete-reminder` operations may fail when the AI fails to correctly fetch/extract the target reminder's `id`, even though the intended reminder exists in the list. This stems from inherent LLM non-determinism in the Agent Assistant / Entity LLM steps rather than a backend proxy bug.
-  **Solved (22 July 2026):** Resolved by using a different LLM model for the Agent Assistant, specifically OpenAI GPT-4o.
 
 ---
 
