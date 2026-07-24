@@ -60,7 +60,7 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 ![Manage Keys](public/chatbot/images/3dots-managekeys.png)
 
 4. Click **"Add key"** → **"Create new key"** → select **JSON** format.
-5. A JSON file will be downloaded automatically. **Save this file securely.**
+5. <a id="downloaded-json"></a>A JSON file will be downloaded automatically. **Save this file securely.**
 
 > [!NOTE]
 > The downloaded JSON has the following structure. You will need the `private_key` and `client_email` values later.
@@ -94,7 +94,7 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 
 ![Shared With Section](public/chatbot/images/sharedwith.png)
 
-4. Click **"Add people and groups"** and enter the **Service Account email** from your Google Cloud Console (the `client_email` value in the JSON).
+4. Click **"Add people and groups"** and enter the **Service Account email** from your Google Cloud Console (the `client_email` value in the [JSON](#downloaded-json)).
 5. Set the permission to **"Make changes to events"**.
 
 ![Share with Service Account](public/chatbot/images/sharewithserviceaccount.png)
@@ -117,21 +117,7 @@ An Express backend proxy that integrates with **Google Calendar API** to provide
 * [package.json](package.json)
 * [package-lock.json](package-lock.json)
 
-### 3.2 Configure Environment Variables
-
-```bash
-cp .env.example .env
-```
-
-Open the `.env` file and fill in the following variables:
-
-| Variable | Description | Source |
-|----------|-------------|--------|
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service Account email | `client_email` field in the downloaded JSON |
-| `GOOGLE_PRIVATE_KEY` | Private key string | `private_key` field in the downloaded JSON |
-| `GOOGLE_CALENDAR_ID` | Calendar ID | "Integrate calendar" section in Google Calendar settings |
-
-### 3.3 Push to GitHub
+### 3.2 Push to GitHub
 
 Push the code to your own GitHub repository using Git or manually uploads your file to [GitHub](https://github.com).
 
@@ -149,7 +135,14 @@ Push the code to your own GitHub repository using Git or manually uploads your f
 
 ![Import Repository](public/chatbot/images/importrepo.png)
 
-4. Under **Environment Variables**, copy the entire content of your `.env` file and paste it into the Vercel environment variable field.
+4. Under **Environment Variables**, fill the Vercel environment variable field with these contents:
+
+| Variable | Description | Source |
+|----------|-------------|--------|
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service Account email | `client_email` field in the downloaded [JSON](#downloaded-json) or from Google Cloud Console Service Account list |
+| `GOOGLE_PRIVATE_KEY` | Private key string | `private_key` field in the downloaded [JSON](#downloaded-json) |
+| `GOOGLE_CALENDAR_ID` | Calendar ID | "Integrate calendar" section in Google Calendar settings |
+
 5. Click **Deploy** and wait for the deployment to complete.
 
 ### 4.2 Domain Setup
