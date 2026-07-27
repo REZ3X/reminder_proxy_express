@@ -404,12 +404,30 @@ app.post('/api/reminder/delete-reminder', async (req, res) => {
 
     const calendar = google.calendar({ version: 'v3', auth: getCalendarAuth() });
 
+    let eventData;
+    try {
+      const getRes = await calendar.events.get({
+        calendarId: process.env.GOOGLE_CALENDAR_ID,
+        eventId: id,
+      });
+      eventData = getRes.data;
+    } catch (err) {
+      if (err.code === 404) {
+        return res.status(404).json({ success: false, error: 'Reminder not found' });
+      }
+      throw err;
+    }
+
     await calendar.events.delete({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
       eventId: id,
     });
 
-    return res.json({ success: true, deleted_id: id });
+    return res.json({
+      success: true,
+      deleted_id: id,
+      event: mapEventToReminder(eventData),
+    });
   } catch (error) {
     console.error('Calendar delete error:', error);
     if (error.code === 410 || error.code === 404) {
