@@ -65,6 +65,32 @@ function extractOffsetPart(isoStr) {
   return match ? match[0] : null;
 }
 
+function startOfTodayJakartaISO() {
+  const now = new Date();
+  const jakartaShifted = new Date(now.getTime() + 7 * 60 * 60 * 1000); // shift UTC by +7h
+  const y = jakartaShifted.getUTCFullYear();
+  const m = String(jakartaShifted.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(jakartaShifted.getUTCDate()).padStart(2, '0');
+  return `${y}-${m}-${d}T00:00:00+07:00`;
+}
+
+// NEW: given an optional explicit search_date ("yyyy-mm-dd"), returns the
+// timeMin to use for the candidate-fetch window:
+// - if no explicit date was given, default to "start of today" (upcoming-only)
+// - if an explicit date was given (past OR future), widen the window to
+//   guarantee that date is included, even if it's in the past
+function resolveSearchTimeMin(searchDate) {
+  const todayStart = startOfTodayJakartaISO();
+  if (isEmpty(searchDate)) return todayStart;
+
+  const explicitDateStart = `${searchDate}T00:00:00+07:00`;
+  const explicitMs = new Date(explicitDateStart).getTime();
+  const todayMs = new Date(todayStart).getTime();
+
+  if (isNaN(explicitMs)) return todayStart; 
+  return explicitMs < todayMs ? explicitDateStart : todayStart;
+}
+
 function mergeReminderDateTime(existingStartISO, existingEndISO, newDate, newStartClock, newEndClock, defaultOffset) {
   const offset = extractOffsetPart(existingStartISO) || defaultOffset || '+07:00';
   const oldStartDate = String(existingStartISO).slice(0, 10);
@@ -263,9 +289,9 @@ app.post('/api/reminder/search-edit-reminder', async (req, res) => {
 
     const calendar = google.calendar({ version: 'v3', auth: getCalendarAuth() });
 
-    const now = new Date();
-    const timeMin = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
-    const timeMax = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString();
+    // Default: only upcoming events (from start of today onward).
+    const timeMin = resolveSearchTimeMin(searchDate);
+    const timeMax = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
 
     const listRes = await calendar.events.list({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
@@ -412,9 +438,9 @@ app.post('/api/reminder/search-delete-reminder', async (req, res) => {
 
     const calendar = google.calendar({ version: 'v3', auth: getCalendarAuth() });
 
-    const now = new Date();
-    const timeMin = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
-    const timeMax = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString();
+    // default to upcoming-only, but honor an
+    const timeMin = resolveSearchTimeMin(searchDate);
+    const timeMax = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
 
     const listRes = await calendar.events.list({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
@@ -497,6 +523,8 @@ app.post('/api/reminder/list-reminder', async (req, res) => {
   try {
     const body = req.body || {};
     const DEFAULT_OFFSET = '+07:00';
+    const FAR_PAST = '2000-01-01T00:00:00Z';
+    const FAR_FUTURE = '2100-01-01T00:00:00Z';
 
     const queryModeRaw = unwrap(body.query_mode);
     const queryMode = isEmpty(queryModeRaw) ? 'event_time' : String(queryModeRaw);
@@ -562,8 +590,8 @@ app.post('/api/reminder/list-reminder', async (req, res) => {
     } else {
       const calendarRes = await calendar.events.list({
         calendarId: process.env.GOOGLE_CALENDAR_ID,
-        timeMin: timeMin || new Date().toISOString(),
-        timeMax: timeMax || undefined,
+        timeMin: timeMin || FAR_PAST,
+        timeMax: timeMax || FAR_FUTURE,
         maxResults: isNaN(requestedMaxResults) ? 20 : requestedMaxResults,
         singleEvents: true,
         showDeleted: false,
