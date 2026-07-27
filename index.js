@@ -394,6 +394,102 @@ app.post('/api/reminder/delete-reminder', async (req, res) => {
 });
 
 // ---------------------------------------------------------
+// Search Delete
+// ---------------------------------------------------------
+
+app.post('/api/reminder/search-delete-reminder', async (req, res) => {
+  try {
+    const searchKeyword = unwrap(req.body.search_keyword);
+    const searchDate = unwrap(req.body.search_date);
+    const searchStartClock = unwrap(req.body.search_start_clock);
+
+    if (isEmpty(searchKeyword) && isEmpty(searchDate) && isEmpty(searchStartClock)) {
+      return res.status(400).json({
+        success: false,
+        error: 'At least one search criterion (search_keyword, search_date, or search_start_clock) is required',
+      });
+    }
+
+    const calendar = google.calendar({ version: 'v3', auth: getCalendarAuth() });
+
+    const now = new Date();
+    const timeMin = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
+    const timeMax = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString();
+
+    const listRes = await calendar.events.list({
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      timeMin,
+      timeMax,
+      maxResults: 2500,
+      singleEvents: true,
+      showDeleted: false,
+    });
+
+    const items = listRes.data.items || [];
+
+    const matches = items.filter((event) => {
+      let ok = true;
+
+      if (!isEmpty(searchKeyword)) {
+        const summary = (event.summary || '').toLowerCase();
+        ok = ok && summary.includes(String(searchKeyword).toLowerCase());
+      }
+
+      if (!isEmpty(searchDate)) {
+        const startStr = event.start?.dateTime || event.start?.date || '';
+        ok = ok && startStr.startsWith(searchDate);
+      }
+
+      if (!isEmpty(searchStartClock)) {
+        const startDateTime = event.start?.dateTime || '';
+        const clockPart = startDateTime.slice(11, 19);
+        ok = ok && clockPart === searchStartClock;
+      }
+
+      return ok;
+    });
+
+    if (matches.length === 0) {
+      return res.json({
+        success: true,
+        found: false,
+        ambiguous: false,
+        deleted: false,
+        candidates: [],
+      });
+    }
+
+    if (matches.length > 1) {
+      return res.json({
+        success: true,
+        found: false,
+        ambiguous: true,
+        deleted: false,
+        candidates: matches.map(mapEventToReminder),
+      });
+    }
+
+    const matched = matches[0];
+
+    await calendar.events.delete({
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      eventId: matched.id,
+    });
+
+    return res.json({
+      success: true,
+      found: true,
+      ambiguous: false,
+      deleted: true,
+      event: mapEventToReminder(matched),
+    });
+  } catch (error) {
+    console.error('Search-delete reminder error:', error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ---------------------------------------------------------
 // List Reminder
 // ---------------------------------------------------------
 
