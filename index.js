@@ -136,6 +136,9 @@ app.post('/api/reminder/create-reminder', async (req, res) => {
     return res.json({
       success: true,
       event_id: calendarRes.data.id,
+      summary: calendarRes.data.summary,
+      start: calendarRes.data.start,
+      end: calendarRes.data.end,
       html_link: calendarRes.data.htmlLink,
     });
   } catch (error) {
