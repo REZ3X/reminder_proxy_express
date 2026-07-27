@@ -537,7 +537,6 @@ app.post('/api/reminder/list-reminder', async (req, res) => {
   try {
     const body = req.body || {};
     const DEFAULT_OFFSET = '+07:00';
-    const FAR_PAST = '2000-01-01T00:00:00Z';
     const FAR_FUTURE = '2100-01-01T00:00:00Z';
 
     const queryModeRaw = unwrap(body.query_mode);
@@ -602,9 +601,10 @@ app.post('/api/reminder/list-reminder', async (req, res) => {
 
       items = items.slice(0, isNaN(requestedMaxResults) ? 20 : requestedMaxResults);
     } else {
+      // start of today
       const calendarRes = await calendar.events.list({
         calendarId: process.env.GOOGLE_CALENDAR_ID,
-        timeMin: timeMin || FAR_PAST,
+        timeMin: timeMin || startOfTodayJakartaISO(),
         timeMax: timeMax || FAR_FUTURE,
         maxResults: isNaN(requestedMaxResults) ? 20 : requestedMaxResults,
         singleEvents: true,
