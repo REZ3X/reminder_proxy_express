@@ -243,11 +243,7 @@ app.post('/api/reminder/edit-reminder', async (req, res) => {
     return res.json({
       success: true,
       edited: true,
-      event_id: calendarRes.data.id,
-      summary: calendarRes.data.summary,
-      start: calendarRes.data.start,
-      end: calendarRes.data.end,
-      html_link: calendarRes.data.htmlLink,
+      event: mapEventToReminder(calendarRes.data),
       fields_updated: Object.keys(patchBody),
     });
   } catch (error) {
