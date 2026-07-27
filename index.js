@@ -235,6 +235,7 @@ app.post('/api/reminder/edit-reminder', async (req, res) => {
 // ---------------------------------------------------------
 
 app.post('/api/reminder/search-edit-reminder', async (req, res) => {
+  console.log('RAW BODY:', JSON.stringify(req.body));
   try {
     const searchKeyword = unwrap(req.body.search_keyword);
     const searchDate = unwrap(req.body.search_date);
