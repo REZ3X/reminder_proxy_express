@@ -223,7 +223,7 @@ You can try out a live example of the reminder bot running on Botika Webchat:
 
 To see the reminders added, modified, or deleted in real-time, you can view the Google Calendar used by the bot:
 
-🔗 **[Google Calendar](https://calendar.google.com/calendar/u/0?cid=cmVqYWthYWJpbUBnbWFpbC5jb20)**
+🔗 **[Google Calendar](https://calendar.google.com/calendar/u/0?cid=YTUyZTllMTNhYzkxYjVlZDBmNjkxMzQzYmFmZDI1M2VlNGI5YThhYTc5M2RlZGQwNjAxY2VjY2ZmY2RlZmY2NkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)**
 
 ---
 
